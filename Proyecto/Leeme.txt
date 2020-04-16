@@ -1,0 +1,23 @@
+Proyecto : "AirMayhem"
+Integrantes Del Grupo O - TT :
+
+Gustavo Vergara
+Walter Gómez
+Andrés Kogan
+Ismael Boff López
+
+Descripción: Realizamos este proyecto con propósitos universitarios y con
+el objetivo de aprender el desarrollo de programas/juegos en Python3.
+
+El proyecto que se planea llevar a cabo es un video juego del tipo arcade-retro (al estilo Space Invaders).
+El jugador controla una nave espacial la cual posee un disparo de armas automático. Se tienen que ir derrotando naves enemigas de forma consecutiva así también como esquivar obstáculos que se van presentando en el mapa.
+
+    ------ Herramientas Propuestas -------
+ - Utilizamos el IDE PyCharm Community (Open Source)
+ - Versión de Python 3 (Mas en específico 3.8.2)
+ - Utilización de la Librería para Python, PyGame (facilita el desarrollo de video juegos)
+ - GIT
+ - Todo esto corriendo en un Sistema Operativo Linux (Ubuntu y Xubuntu)
+   
+    ------- Metodología de Trabajo --------
+Esto fue posible gracias a la herramienta de GIT la cual facilita comandos en la consola de Linux para sincronizar el progreso que iba realizando cada mimbro del equipo en un repositorio almacenado en la plataforma Github.
