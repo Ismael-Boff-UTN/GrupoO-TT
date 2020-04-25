@@ -1,4 +1,4 @@
-Proyecto : "AirMayhem"
+Proyecto: "AirMayhem"
 Integrantes Del Grupo O - TT :
 
 Gustavo Vergara
@@ -6,11 +6,43 @@ Walter Gómez
 Andrés Kogan
 Ismael Boff López
 
-Descripción: Realizamos este proyecto con propósitos universitarios y con
-el objetivo de aprender el desarrollo de programas/juegos en Python3.
+Descripción: Realizamos este proyecto con propósitos universitarios y con el objetivo de aprender 
+el desarrollo de programas/juegos en Python3.
 
-El proyecto que se planea llevar a cabo es un video juego del tipo arcade-retro (al estilo Space Invaders).
-El jugador controla una nave espacial la cual posee un disparo de armas automático. Se tienen que ir derrotando naves enemigas de forma consecutiva así también como esquivar obstáculos que se van presentando en el mapa.
+Objetivo Principal :
+
+El proyecto que se planea llevar a cabo es un video juego del tipo search and destroy multijugador en LAN donde 2-4 jugadores
+deberán encontrarse los unos a los otros en un laberinto aleatorio. 
+
+Los jugadores aparecen cada uno en un lugar equidistante del mapa tras lo cual empiezan a moverse buscando a sus oponentes.
+Durante su periplo en el mapa pueden encontrar diferentes ítems que otorgarán poderes especiales.
+ - Tenemos el tiro triple el cual como su nombre indica genera un tiro en 3 direcciones siendo la central la del jugador 
+y las otras 2 a 35 grados cada una. 
+ - El siguiente ítem es el tiro rápido que acelera drásticamente la cantidad de balas
+   que tira la nave en este caso manteniendo el botón pulsado.
+ - El escudo extra que le otorga al jugador una defensa sobre los ataques enemigos que lo harán perder energía más lentamente.
+ - La híper-velocidad que hace que la nave incremente su velocidad.
+ - Por último el kit de reparaciones que otorga una carga de energía al jugador.
+
+Los ítems se encuentran desplegados a los largo del mapa y pueden aparecer y desaparecer de manera aleatoria.
+Cada uno de estos poderes tiene una temporalidad diferente, la velocidad, disparo rápido y disparo triple durarán 10 segundos,
+el escudo 15 y el kit de reparación tiene una acción permanente.
+
+La dinámica de movimiento y comandos están dadas por mouse y teclado.
+
+Con las flechas de teclado se determina el sentido del movimiento, mientras que con el mouse se dispara y se apunta con una mira,
+haciendo que la nave gire en sentido de donde se está apuntando. Es por esto que la nave tiene movimiento hacia adelante, los costados,
+pero también hacia atrás. Los jugadores cuentan con un nivel de energía (Vida) el cual va decayendo a medida que reciben disparos, 
+cuando este llega a 0 el jugador muere y debe esperar a la siguiente partida.
+
+Los jugadores reciben puntaje por daño al rival y por destrucción definitiva.
+En cuanto al mapa este se ve desde una posición cenital y solo accedemos a una parte del mismo,
+de esta forma nunca sabemos claramente donde están los enemigos.
+
+Para encontrarlos nos podemos guiar por un minimapa que nos dice donde están aproximadamente cada uno de los jugadores
+identificadas con su color.
+
+
 
     ------ Herramientas Propuestas -------
  - Utilizamos el IDE PyCharm Community (Open Source)
