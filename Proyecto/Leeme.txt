@@ -14,8 +14,8 @@ Objetivo Principal :
 El proyecto que se planea llevar a cabo es un video juego del tipo search and destroy multijugador en LAN donde 2-4 jugadores
 deberán encontrarse los unos a los otros en un laberinto aleatorio. 
 
-Los jugadores aparecen cada uno en un lugar equidistante del mapa tras lo cual empiezan a moverse buscando a sus oponentes.
-Durante su periplo en el mapa pueden encontrar diferentes ítems que otorgarán poderes especiales.
+Los jugadores aparecen cada uno en las esquinas del mapa tras lo cual empiezan a moverse buscando a sus oponentes.
+Durante su periplo en el mapa pueden encontrar diferentes ítems que otorgarán habilidades especiales.
  - Tenemos el tiro triple el cual como su nombre indica genera un tiro en 3 direcciones siendo la central la del jugador 
 y las otras 2 a 35 grados cada una. 
  - El siguiente ítem es el tiro rápido que acelera drásticamente la cantidad de balas
@@ -32,7 +32,7 @@ La dinámica de movimiento y comandos están dadas por mouse y teclado.
 
 Con las flechas de teclado se determina el sentido del movimiento, mientras que con el mouse se dispara y se apunta con una mira,
 haciendo que la nave gire en sentido de donde se está apuntando. Es por esto que la nave tiene movimiento hacia adelante, los costados,
-pero también hacia atrás. Los jugadores cuentan con un nivel de energía (Vida) el cual va decayendo a medida que reciben disparos, 
+y también hacia atrás. Los jugadores cuentan con un nivel de energía (Vida) el cual va decayendo a medida que reciben disparos, 
 cuando este llega a 0 el jugador muere y debe esperar a la siguiente partida.
 
 Los jugadores reciben puntaje por daño al rival y por destrucción definitiva.
@@ -40,7 +40,7 @@ En cuanto al mapa este se ve desde una posición cenital y solo accedemos a una 
 de esta forma nunca sabemos claramente donde están los enemigos.
 
 Para encontrarlos nos podemos guiar por un minimapa que nos dice donde están aproximadamente cada uno de los jugadores
-identificadas con su color.
+identificados con su color.
 
 
 
@@ -52,4 +52,5 @@ identificadas con su color.
  - Todo esto corriendo en un Sistema Operativo Linux (Ubuntu y Xubuntu)
    
     ------- Metodología de Trabajo --------
-Esto fue posible gracias a la herramienta de GIT la cual facilita comandos en la consola de Linux para sincronizar el progreso que iba realizando cada mimbro del equipo en un repositorio almacenado en la plataforma Github.
+Esto sería posible gracias a la herramienta de GIT la cual facilita comandos en la consola de Linux para sincronizar el progreso que 
+iba realizando cada mimbro del equipo en un repositorio almacenado en la plataforma Github.
