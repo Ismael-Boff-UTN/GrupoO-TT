@@ -1,4 +1,4 @@
-Proyecto: "AirMayhem"
+﻿Proyecto: "AirMayhem"
 Integrantes Del Grupo O - TT :
 
 Gustavo Vergara
@@ -39,8 +39,7 @@ Los jugadores reciben puntaje por daño al rival y por destrucción definitiva.
 En cuanto al mapa este se ve desde una posición cenital y solo accedemos a una parte del mismo,
 de esta forma nunca sabemos claramente donde están los enemigos.
 
-Para encontrarlos nos podemos guiar por un minimapa que nos dice donde están aproximadamente cada uno de los jugadores
-identificados con su color.
+Para encontrarlos nos guiamos por unas flechas que señalan a los jugadores con su color guiandonos de su lugar aproximado en el mapa.
 
 
 
