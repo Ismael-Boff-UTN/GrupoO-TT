@@ -21,7 +21,7 @@ def kaprekar(num):
     return i
 
 
-# Pide cantidad de numero a ingresar
+# Pide cantidad de numeros a ingresar
 cantDeNum = input("ingrese cantidad de casos de prueba\n")
 listaDeNumeros = list()
 for i in range(int(cantDeNum)):                         # Bucle de Ingreso de Numeros
