@@ -9,18 +9,18 @@ def todosDigitosIguales(numero):
     return True
 
 # Funcion que devuelve el numero de iteraciones hasta alcanzar 6174 aplicando la rutina de Kaprekar
-def kaprekar(num):
-    if todosDigitosIguales(str(num)):
+def kaprekar(numero):
+    if todosDigitosIguales(str(numero)):
         return 8  # Devuelve 8 si son todos los digitos iguales
-    tmp = num
+    num = numero
     i = 0
-    while tmp != 6174:
-        tmp = '{:0>4}'.format(tmp)  # Completa con 0 hasta los 4 digitos
-        tmp = list(str(tmp))  # Pasa de string a lista de caracteres
-        tmp.sort(reverse=True)  # Ordena los caracteres en forma descendiente
-        tmp = "".join(tmp)  # Une los caracteres en una cadena
-        numRev = "".join(reversed(tmp))# Invierte los caracteres en otra cadena
-        tmp = int(tmp) - int(numRev)# Castea la cadena ordenada e invertica a entero y los resta
+    while num != 6174:
+        num = '{:0>4}'.format(num)  # Completa con 0 hasta los 4 digitos
+        num = list(str(num))  # Pasa de string a lista de caracteres
+        num.sort(reverse=True)  # Ordena los caracteres en forma descendiente
+        num = "".join(num)  # Une los caracteres en una cadena
+        numRev = "".join(reversed(num))# Invierte los caracteres en otra cadena
+        num = int(num) - int(numRev)# Castea la cadena ordenada e invertica a entero y los resta
         i += 1  # Cuenta las iteraciones realizadas hasta alcanzar 6174
 
     return i
