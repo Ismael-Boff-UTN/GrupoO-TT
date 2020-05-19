@@ -1,54 +1,52 @@
 
 # Funcion que comprueba si todos los digitos son iguales
 def todosDigitosIguales(numero):
-    num = list(numero)
-    primerDig = num[0]
-    for dig in num:
-        if dig != primerDig:
+    digitos = list(str(numero))
+    for digito in num:
+        if digito != digitos[0]: # Si algún digito es distinto al inicial, no son todos iguales
             return False
     return True
 
-# Funcion que devuelve el numero de iteraciones hasta alcanzar 6174 aplicando la rutina de Kaprekar
-def kaprekar(numero):
-    if todosDigitosIguales(str(numero)):
+# Función que devuelve el numero de iteraciones hasta alcanzar 6174 aplicando la rutina de Kaprekar
+def kaprekar(num):
+    if todosDigitosIguales(num):
         return 8  # Devuelve 8 si son todos los digitos iguales
-    num = numero
     i = 0
     while num != 6174:
-        num = '{:0>4}'.format(num)  # Completa con 0 hasta los 4 digitos
-        num = list(str(num))  # Pasa de string a lista de caracteres
-        num.sort(reverse=True)  # Ordena los caracteres en forma descendiente
-        num = "".join(num)  # Une los caracteres en una cadena
-        numRev = "".join(reversed(num))# Invierte los caracteres en otra cadena
-        num = int(num) - int(numRev)# Castea la cadena ordenada e invertica a entero y los resta
-        i += 1  # Cuenta las iteraciones realizadas hasta alcanzar 6174
-
+        num = str(num).zfill(4)                     # Completa con 0 hasta los 4 digitos
+        numDesc = "".join(sorted(num,reverse=True)) # Ordena los caracteres en forma descendiente y los une
+        numAsc  = "".join(reversed(numDesc))        # Invierte los caracteres en otra cadena
+        num = int(numDesc) - int(numAsc)            # Castea la cadena ordenada e invertica a entero y los resta
+        i += 1                                      # Cuenta las iteraciones realizadas hasta alcanzar 6174
     return i
 
 
 # Pide cantidad de numero a ingresar
 cantDeNum = input("ingrese cantidad de casos de prueba\n")
-lista = list()
-for i in range(int(cantDeNum)):
-
+listaDeNumeros = list()
+for i in range(int(cantDeNum)):                         # Bucle de Ingreso de Numeros
     while True:                                         # Bucle de validaciones
-        num = input(f"ingrese num {i}: ")
-
-        if not(num.isnumeric()):                        # Que solo se ingresen digitos
+        num = input(f"ingrese num ({i+1} de {cantDeNum}): ")               # Pide el ingreso de numeros
+        if not(num.isnumeric()):                        # Valida que solo se ingresen digitos
             print("Solo puede ingresar numeros")
             continue
-        elif len(num) != 4:                             # Que solo sean 4 digitos
-            print("El numero debe tener 4 digitos")
+        elif len(num) > 4:                              # Valida que sean hasta 4 digitos
+            print("El numero debe tener menos de 4 digitos")
+            continue
+        elif len(num) < 2:                              # Valida que sean al menos 2 digitos
+            print("El numero debe tener al menos de 2 digitos")
             continue
         else:
-            lista.append(int(num))
+            listaDeNumeros.append(int(num))
             break
 
-print(f"\nLos numeros son:\n{lista}")  # Muestra los numeros elegidos
 
+# Muestra los numeros elegidos
+print(f"\nLos numeros son:\n{listaDeNumeros}")  
+
+# Obtiene la cantidad de iteraciones para cada numero
 lista_iter_kaprekar = list()
-for n in lista:
-    # Obtiene la cantidad de iteraciones para cada numero
+for n in listaDeNumeros:
     lista_iter_kaprekar.append(kaprekar(n))
 
 # Muestra el numero de iteraciones de cada numero
