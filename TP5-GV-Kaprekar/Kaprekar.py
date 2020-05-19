@@ -1,8 +1,8 @@
 
 # Funcion que comprueba si todos los digitos son iguales
 def todosDigitosIguales(numero):
-    digitos = list(str(numero))
-    for digito in num:
+    digitos = str(numero)
+    for digito in digitos:
         if digito != digitos[0]: # Si algún digito es distinto al inicial, no son todos iguales
             return False
     return True
@@ -19,7 +19,6 @@ def kaprekar(num):
         num = int(numDesc) - int(numAsc)            # Castea la cadena ordenada e invertica a entero y los resta
         i += 1                                      # Cuenta las iteraciones realizadas hasta alcanzar 6174
     return i
-
 
 # Pide cantidad de numeros a ingresar
 cantDeNum = input("ingrese cantidad de casos de prueba\n")
@@ -40,7 +39,6 @@ for i in range(int(cantDeNum)):                         # Bucle de Ingreso de Nu
             listaDeNumeros.append(int(num))
             break
 
-
 # Muestra los numeros elegidos
 print(f"\nLos numeros son:\n{listaDeNumeros}")  
 
@@ -51,3 +49,4 @@ for n in listaDeNumeros:
 
 # Muestra el numero de iteraciones de cada numero
 print(f"\nLos cantidad de iteraciones son:\n{lista_iter_kaprekar}")
+
