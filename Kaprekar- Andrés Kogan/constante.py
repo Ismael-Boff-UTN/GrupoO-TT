@@ -52,8 +52,14 @@ while (repeticion!=casos):
     repeticion+=1
     #declaro un contador para ver las veces que itera el programa hasta llegar a 6174
     contador=0
-    #tomo el input y lo transformo en int
-    resultado= int(input("ingrese un número de 4 dígitos que tenga al menos 2 números diferentes"))
+   #compruebo que el número sea de 4 cifras o menos
+    resultado= input("ingrese un número de 4 dígitos que tenga al menos 2 números diferentes")
+    while (len(resultado)>4):
+     print("debe ingresar un número de 4 cifras o menor")
+     resultado = input("ingrese un número de 4 dígitos que tenga al menos 2 números diferentes")
+    # tomo el input y lo transformo en int
+    resultado = int(resultado)
+
 
     #declaro un while, en caso de que los números fueran todos iguales el programa tendería a infinito por lo cual a la 8va iteración se que se han ingresado números iguales y corto la iteración
     while (resultado!=6174 and contador!=8):
