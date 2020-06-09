@@ -12,10 +12,10 @@ def sumar_vector(a,b):
     return a[0]+b[0],a[1]+b[1]
 
 
-def esColision(enemyX, enemyY, balaX, balaY):
+def esColision(obj_1_x, obj_1_y,obj_2_x, obj_2_y):
     try:
-        distancia = math.sqrt(pow(enemyX - balaX, 2) + pow(enemyY - balaY, 2))
-        if distancia < 27:
+        distancia = math.sqrt(pow(obj_1_x - obj_2_x, 2) + pow(obj_1_y - obj_2_y, 2))
+        if distancia < 32:
             return True
     except:
         return False

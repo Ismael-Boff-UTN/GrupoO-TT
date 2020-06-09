@@ -11,10 +11,10 @@ pygame.init()
 mouse.set_visible(False)
 # Crear la pantalla y camara
 screen = pygame.display.set_mode((800, 600))
-camara=Camara()
+camara=Camara(screen)
 
 # Fondo
-fondo = Fondo("imagenes/Laberinto.png",screen,camara,"imagenes/fondo.jpg")
+fondo = Fondo("imagenes/fondo.jpg",screen,camara,"imagenes/Laberinto.png")
 
 # Titulo e Icono
 pygame.display.set_caption("AirMayhaem")
@@ -66,7 +66,7 @@ while ejecutandose:
     # Movemos enemigos
     for i in range(enemy_cantidad):
         # Colisiones
-        colision = comunes.esColision(enemy[i].x, enemy[i].y, player.bala.x, player.bala.y)
+        colision = comunes.esColision(enemy[i].x+32, enemy[i].y+32, player.bala.x+16, player.bala.y+16)
         if colision:
             player.bala.quieta = True
             puntaje_valor += 1
