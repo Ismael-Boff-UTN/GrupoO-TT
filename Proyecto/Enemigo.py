@@ -27,8 +27,8 @@ class Enemigo:
     def dibujar(self):
         self.mover()
         if not self.muerto:
-            self.screen.blit(self.img, (self.x-self.camara.x, self.y-self.camara.y))
-        
+            self.camara.dibujar(self.img, self.x, self.y)
+
     def mover(self):
         self.y += self.y_cambio
         self.x += self.x_cambio

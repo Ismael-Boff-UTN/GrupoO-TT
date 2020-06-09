@@ -18,12 +18,14 @@ class jugador:
         self.y = y
         self.x_cambio = 0.0
         self.y_cambio = 0.0
-        self.unidad_de_avance = 1
+        self.unidad_de_avance = 5
         self.ang = 0.0
         self.screen = screen
         self.avanzar = False
         self.retroceder = False
         self.img_laberinto=img_laberinto
+        self.ancho=64
+        self.alto=64
 
         # Bala
         self.bala = Bala(img_bala_ruta, screen,self.camara)
@@ -33,8 +35,7 @@ class jugador:
     def dibujar(self, x, y,mouse_x,mouse_y):
         self.mover_jugador()
         self.rotar_jugador(mouse_x,mouse_y)
-        self.screen.blit(self.img, (x, y))  # blit significa "dibujar"
-
+        self.camara.dibujar(self.img, x, y)
 
     def tecla_presionada(self, eventkey):
         if eventkey == pygame.K_w:
@@ -80,35 +81,35 @@ class jugador:
         self.x_cambio = avance_normal[0]
         self.y_cambio = avance_normal[1]
 
-        self.y = self.y + self.y_cambio
-        self.x = self.x + self.x_cambio
-
+        #Se fija si el punto central de la nave al moverse va a entrar en una zona blanca
         try:
-            if (self.img_laberinto.get_at((int(self.x),int(self.y)))[3]) != 0:
-                self.y = self.y - self.y_cambio
-                self.x = self.x - self.x_cambio
+            tmp_x=int(self.x + self.x_cambio+ self.ancho/2)
+            tmp_y=int(self.y + self.y_cambio+ self.ancho/2)
+            if (self.img_laberinto.get_at((tmp_x , tmp_y ))[2]) == 255:
+                self.y += self.y_cambio
+                self.x += self.x_cambio
+            # Deslizarse. Si no puede ir para adelante pero puede ir al costado o viceversa que lo haga
+            elif (self.img_laberinto.get_at((tmp_x, int(self.y + self.ancho/2)))[2]) == 255:
+                self.x += self.x_cambio
+            elif (self.img_laberinto.get_at((int(self.x + self.ancho/2), tmp_y ))[2]) == 255:
+                self.y += self.y_cambio
         except:
             pass
 
-        # vemos que no se escape de los bordes de la pantalla
-        if self.x < 0:
-            self.x = 0
+        # la camara sigue al jugador
+        if (self.x - self.camara.x)<200:
             self.camara.set_x( self.camara.x - self.unidad_de_avance )
-        elif self.x > (800 - 64):  # 800-64
-            self.x = (800 - 64)
+        elif (self.x - self.camara.x)>400:
             self.camara.set_x( self.camara.x + self.unidad_de_avance)
-        if self.y < 0:
-            self.y = 0
+        if (self.y - self.camara.y)<200:
             self.camara.set_y( self.camara.y - self.unidad_de_avance )
-        elif self.y > (600 - 64):
-            self.y = (600 - 64)
+        elif (self.y - self.camara.y)>400:
             self.camara.set_y( self.camara.y + self.unidad_de_avance )
 
         #mover bala
         self.bala.mover_bala()
 
     def rotar_jugador(self,mouse_x,mouse_y):
-        #self.ang = math.atan2(-(mouse_y - self.y ), (mouse_x - self.x + 0.0000001))
         self.ang = math.atan2(-(mouse_y - (600/2)), (mouse_x - (800/2) + 0.0000001))
 
         if mouse.get_pos()[0]>((800/2)+100):
