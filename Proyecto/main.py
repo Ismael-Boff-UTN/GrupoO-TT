@@ -14,14 +14,14 @@ screen = pygame.display.set_mode((800, 600))
 camara=Camara()
 
 # Fondo
-fondo = Fondo("imagenes/fondo.jpg",screen,camara)
+fondo = Fondo("imagenes/Laberinto.png",screen,camara,"imagenes/fondo.jpg")
 
 # Titulo e Icono
 pygame.display.set_caption("AirMayhaem")
 icono = pygame.image.load('imagenes/icono.png') # https://www.flaticon.com/search?search-type=icons&word=arcade+space
 pygame.display.set_icon(icono)
 
-player = jugador("imagenes/player.png", 370, 480, screen,camara,"imagenes/bullet.png")
+player = jugador("imagenes/player.png", 170, 280, screen,camara,"imagenes/bullet.png", fondo.img_laberinto)
 
 enemy_cantidad = 3
 enemy = []

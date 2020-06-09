@@ -10,7 +10,7 @@ from pygame import mouse
 class jugador:
 
     # Constructor def __init__(self, atributos)
-    def __init__(self, img_ruta, x, y, screen,camara, img_bala_ruta):
+    def __init__(self, img_ruta, x, y, screen,camara, img_bala_ruta, img_laberinto):
         self.camara=camara
         self.img_ori = pygame.image.load(img_ruta)
         self.img = self.img_ori
@@ -23,7 +23,7 @@ class jugador:
         self.screen = screen
         self.avanzar = False
         self.retroceder = False
-
+        self.img_laberinto=img_laberinto
 
         # Bala
         self.bala = Bala(img_bala_ruta, screen,self.camara)
@@ -82,6 +82,13 @@ class jugador:
 
         self.y = self.y + self.y_cambio
         self.x = self.x + self.x_cambio
+
+        try:
+            if (self.img_laberinto.get_at((int(self.x),int(self.y)))[3]) != 0:
+                self.y = self.y - self.y_cambio
+                self.x = self.x - self.x_cambio
+        except:
+            pass
 
         # vemos que no se escape de los bordes de la pantalla
         if self.x < 0:
