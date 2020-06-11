@@ -13,7 +13,7 @@ class Enemigo:
         self.img = self.img_ori
         self.x = random.randint(0, 800 - 64)
         self.y = random.randint(50, 150)
-        self.unidad_de_avance=0.3
+        self.unidad_de_avance=0.7
         self.x_cambio = 1.0
         self.y_cambio = 1.0
         self.screen = screen

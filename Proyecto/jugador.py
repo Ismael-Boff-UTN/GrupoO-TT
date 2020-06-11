@@ -98,13 +98,13 @@ class jugador:
 
         # la camara sigue al jugador
         if (self.x - self.camara.x)<200:
-            self.camara.set_x( self.camara.x - self.unidad_de_avance )
+            self.camara.set_x( self.camara.x - abs(self.x_cambio))
         elif (self.x - self.camara.x)>400:
-            self.camara.set_x( self.camara.x + self.unidad_de_avance)
+            self.camara.set_x( self.camara.x + abs(self.x_cambio))
         if (self.y - self.camara.y)<200:
-            self.camara.set_y( self.camara.y - self.unidad_de_avance )
+            self.camara.set_y( self.camara.y - abs(self.y_cambio))
         elif (self.y - self.camara.y)>400:
-            self.camara.set_y( self.camara.y + self.unidad_de_avance )
+            self.camara.set_y( self.camara.y + abs(self.y_cambio))
 
         #mover bala
         self.bala.mover_bala()

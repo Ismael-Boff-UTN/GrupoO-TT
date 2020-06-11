@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (Proyecto)" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6 (untitled)" project-jdk-type="Python SDK" />
+>>>>>>> 01cbec94e0993fdf397cb0a99c9d9ef9e47e1576
 </project>
