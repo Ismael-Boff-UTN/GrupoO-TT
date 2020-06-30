@@ -102,6 +102,7 @@ while ejecutandose:
             if colision:
                 item[i].comer(player)
                 item[i]=None
+
                 continue
 
             item[i].dibujar()
@@ -118,6 +119,7 @@ while ejecutandose:
                     player.balas[j].quieta = True
                     puntaje_valor += 1
                     enemy[i]=None
+
                     continue
 
                 enemy[i].dibujar()

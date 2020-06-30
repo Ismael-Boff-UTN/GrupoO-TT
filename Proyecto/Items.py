@@ -24,10 +24,6 @@ class Items:
         self.x = xy[0]-32
         self.y = xy[1]- 32
         self.tipo = 3
-
-
-
-        self.comido = False
         self.img_laberinto = img_laberinto
 
     def comer(self, jugador):
@@ -40,8 +36,7 @@ class Items:
     def dibujar (self):
         self.camara.dibujar(self.img,self.x, self.y)
 
-    def desaparecer(self):
-        self.comido = True
+
 
 
 

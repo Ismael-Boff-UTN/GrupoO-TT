@@ -16,19 +16,16 @@ class Enemigo:
         self.unidad_de_avance=0.1
         self.x_cambio =   self.unidad_de_avance
         self.y_cambio =  self.unidad_de_avance
-        self.muerto=False
+        self.muerto= False
         self.img_laberinto=img_laberinto
 
-    def morir(self):
-        self.muerto=True
-        self.x=-100
-        self.y=-100
+
+
 
     # Funcion que dibuja el enemigo
     def dibujar(self):
         self.mover()
-        if not self.muerto:
-            self.camara.dibujar(self.img, self.x, self.y)
+        self.camara.dibujar(self.img, self.x, self.y)
 
     def mover(self):
         # restringimos los movimientos para que no se escape de la pantalla
