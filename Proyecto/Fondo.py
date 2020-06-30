@@ -8,9 +8,9 @@ class Fondo:
         self.camara = camara
         self.x = 0
         self.y = 0
-        self.img = pygame.image.load(img_ruta)
-        self.img_laberinto=pygame.image.load(img_laberinto_ruta)
-        self.img_fondo_estatico=pygame.image.load(img_fondo_estatico_ruta)
+        self.img = pygame.image.load(img_ruta).convert_alpha()
+        self.img_laberinto=pygame.image.load(img_laberinto_ruta).convert()
+        self.img_fondo_estatico=pygame.image.load(img_fondo_estatico_ruta).convert()
 
     def dibujar_fondo(self):
         self.camara.dibujar(self.img_laberinto, 0, 0)

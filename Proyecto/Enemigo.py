@@ -9,13 +9,13 @@ class Enemigo:
 
     def __init__(self, img_ruta,xy, camara,img_laberinto):
         self.camara = camara
-        self.img_ori = pygame.image.load(img_ruta)
+        self.img_ori = pygame.image.load(img_ruta).convert_alpha()
         self.img = self.img_ori
         self.x = xy[0]-32
         self.y = xy[1]-32
-        self.unidad_de_avance=0.7
-        self.x_cambio = 1.0
-        self.y_cambio = 1.0
+        self.unidad_de_avance=0.1
+        self.x_cambio =   self.unidad_de_avance
+        self.y_cambio =  self.unidad_de_avance
         self.muerto=False
         self.img_laberinto=img_laberinto
 

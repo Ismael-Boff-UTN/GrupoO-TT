@@ -5,6 +5,7 @@ from Fondo import Fondo
 from Camara import Camara
 import comunes
 from pygame import mouse
+from Items import Items
 
 # Inicializa PyGame
 pygame.init()
@@ -29,6 +30,11 @@ player = jugador("imagenes/player.png", fondo.punto_aleatorio_posible_segun_labe
 
 enemy_cantidad = 30
 enemy = []
+items_cantidad = 10
+item = []
+
+for j in range(items_cantidad):
+    item.append(Items("imagenes/alert.png",fondo.punto_aleatorio_posible_segun_laberinto(),camara,fondo.img_laberinto))
 
 for i in range(enemy_cantidad):
     enemy.append(Enemigo("imagenes/alien.png",fondo.punto_aleatorio_posible_segun_laberinto(),camara,fondo.img_laberinto))
@@ -51,14 +57,20 @@ def minimapa():
                 int(player.x / 3000 * (screen_ancho / 3) + screen_ancho * (2 / 3)),
                 int(player.y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 4, 0)
 
-    for i in range(enemy_cantidad):
-        pygame.draw.circle(camara.screen, (255, 0, 0),
-                           (int(enemy[i].x / 3000 * (screen_ancho / 3) + screen_ancho * (2 / 3)),
-                        int(enemy[i].y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 5, 0)
-
-    pygame.draw.circle(camara.screen, (100, 100, 255), (
-                   int(player.bala.x / 3000 * (screen_ancho / 3) + screen_ancho * (2 / 3)),
-                   int(player.bala.y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 5, 0)
+    for i in range(len(enemy)):
+        if enemy[i]!=None:
+            pygame.draw.circle(camara.screen, (255, 0, 0),
+                               (int(enemy[i].x / 3000 * (screen_ancho / 3) + screen_ancho * (2 / 3)),
+                            int(enemy[i].y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 5, 0)
+    for h in range (len(item)):
+        if item[h] != None:
+            pygame.draw.circle(camara.screen, (255, 255, 255),
+                               (int(item[h].x / 3000 * (screen_ancho/3) + screen_ancho * (2/3)),
+                            int(item[h].y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 5 , 0)
+    for j in range(5):
+        pygame.draw.circle(camara.screen, (100, 100, 255), (
+                       int(player.balas[j].x / 3000 * (screen_ancho / 3) + screen_ancho * (2 / 3)),
+                       int(player.balas[j].y / 2000 * (screen_alto / 3) + screen_alto * (2 / 3))), 5, 0)
 
 # Loop principal del juego
 ejecutandose = True
@@ -83,17 +95,32 @@ while ejecutandose:
     # Dibujar el jugador
     player.dibujar(player.x, player.y,pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 
+    for i in range(len(item)):
+        if item[i] != None:
+            colision = comunes.esColision((player.x + 32, player.y + 32),
+                                          (item[i].x + 16, item[i].y + 16))
+            if colision:
+                item[i].comer(player)
+                item[i]=None
+                continue
+
+            item[i].dibujar()
+
+
     # Movemos enemigos
     for i in range(enemy_cantidad):
 
         # Colisiones
-        colision = comunes.esColision((enemy[i].x+32, enemy[i].y+32), (player.bala.x+16, player.bala.y+16))
-        if colision:
-            player.bala.quieta = True
-            puntaje_valor += 1
-            enemy[i].morir()
+        for j in range(5):
+            if enemy[i] != None:
+                colision = comunes.esColision((enemy[i].x+32, enemy[i].y+32), (player.balas[j].x+16, player.balas[j].y+16))
+                if colision:
+                    player.balas[j].quieta = True
+                    puntaje_valor += 1
+                    enemy[i]=None
+                    continue
 
-        enemy[i].dibujar()
+                enemy[i].dibujar()
 
     puntaje_mostrar(textX, textY)
     minimapa()
