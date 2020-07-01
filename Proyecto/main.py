@@ -14,8 +14,8 @@ mouse.set_visible(False)
 
 
 # Crear la pantalla y camara
-#camara=Camara(1280,720,True)
-camara=Camara(1920,1080,True)
+camara=Camara(1280,720,False)
+#camara=Camara(1920,1080,True)
 
 # Fondo
 fondo = Fondo("imagenes/fondo1.png",camara,"imagenes/Laberinto.png","imagenes/fondo_quieto.jpg")

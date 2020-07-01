@@ -24,8 +24,8 @@ class Enemigo:
         self.items=items
 
         # Sonido
-        self.sonido_al_morir = pygame.mixer.Sound(sonido_al_morir)
-        self.sonido_al_morir.set_volume(0.15)
+#        self.sonido_al_morir = pygame.mixer.Sound(sonido_al_morir)
+#        self.sonido_al_morir.set_volume(0.15)
 
 
 
