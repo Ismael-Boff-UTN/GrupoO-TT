@@ -19,7 +19,7 @@ def send(msg):
     client.send(message)
     print(client.recv(2048).decode(FORMAT))
 
-send("hola jugador # 2 !")
+send("hola Jugador # 2 !")
 input()
 send("hola a todos !")
 input()

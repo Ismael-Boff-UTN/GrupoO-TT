@@ -1,9 +1,19 @@
+import pygame
 
 class Camara:
-    def __init__(self, screen):
-        self.x=0 #xy[0]
-        self.y=0 #xy[1]
-        self.screen=screen
+
+    def __init__(self, screen_ancho, screen_alto, fullscreen):
+        self.fondo = object
+        self.x=0
+        self.y=0
+        self.screen_ancho = screen_ancho
+        self.screen_alto = screen_alto
+        if fullscreen:
+            self.screen = pygame.display.set_mode((self.screen_ancho, self.screen_alto), pygame.FULLSCREEN | pygame.HWSURFACE| pygame.DOUBLEBUF)
+        else:
+            self.screen = pygame.display.set_mode((self.screen_ancho, self.screen_alto), pygame.HWSURFACE | pygame.DOUBLEBUF)
+
+        self.dark=pygame.image.load("imagenes/dark.bmp").convert()
 
     def centrar(self,xy):
         self.set_x(xy[0]-800/2)
@@ -25,12 +35,19 @@ class Camara:
         else:
             self.y=y
 
-    def dibujar(self,img,x,y):
+    def dibujar(self,img,x,y, dark=False):
         self.screen.blit(img, (x-self.x, y-self.y))
+
+        if dark:
+            self.screen.blit(self.dark, (x-self.x-726/2, y-self.y-726/2), special_flags=pygame.BLEND_RGB_MULT)
+            pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
+            pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
+            pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
+            pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
 
 
     def visible_en_camara(self,x,y,ancho,alto):
-        if (x + ancho)<self.x or (y + alto)<self.y or x>(self.x+800) or y>(self.y+600):
+        if (x + ancho)<self.x or (y + alto)<self.y or x>(self.x+self.screen_ancho) or y>(self.y+self.screen_alto):
             return False
         else:
             return True

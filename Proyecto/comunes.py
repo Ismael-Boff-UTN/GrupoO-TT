@@ -5,7 +5,7 @@ img_laberinto = 0
 INTERACCION_REBOTAR = 0
 INTERACCION_DESLIZARSE = 1
 INTERACCION_IGNORAR = 2
-
+INTERACCION_CHOCAR = 3
 
 def avance_ang_to_deltaXY(unidad_de_avance, ang):
     x_cambio = math.cos(math.radians(ang)) * unidad_de_avance
@@ -19,7 +19,7 @@ def deltaXY_to_avance_ang(deltaXY):
 
 
 def esColision(obj_1_xy, obj_2_xy):
-    if distancia(obj_1_xy, obj_2_xy) < 32:
+    if distancia(obj_1_xy, obj_2_xy) < 40:
         return True
     return False
 
@@ -44,12 +44,16 @@ def avanzar_segun_laberinto2(actual_xy, unidad_de_avance, ang, ancho_alto_del_ob
 
 def avanzar_segun_laberinto(actual_xy, delta_xy_propuesto, ancho_alto_del_objeto, INTERACCION):
     delta_xy_habilitado = [0.0, 0.0]
+    contacto_con_laberinto=False
 
     # Se fija si el punto central de la nave al moverse va a entrar en una zona blanca
     pos_x_propuesta = int(actual_xy[0] + delta_xy_propuesto[0] + ancho_alto_del_objeto[0] / 2)
     pos_y_propuesta = int(actual_xy[1] + delta_xy_propuesto[1] + ancho_alto_del_objeto[1] / 2)
+
     if pos_x_propuesta < 0 or pos_y_propuesta < 0:
-        return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1]
+        return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
+    if pos_x_propuesta > 2999 or pos_y_propuesta > 1999:
+        return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
     pos_x_quieto = int(actual_xy[0] + ancho_alto_del_objeto[0] / 2)
     pos_y_quieto = int(actual_xy[1] + ancho_alto_del_objeto[1] / 2)
 
@@ -59,21 +63,41 @@ def avanzar_segun_laberinto(actual_xy, delta_xy_propuesto, ancho_alto_del_objeto
     if (img_laberinto.get_at((pos_x_propuesta, pos_y_propuesta))[0]) == 255:
         delta_xy_habilitado[0] = delta_xy_propuesto[0]
         delta_xy_habilitado[1] = delta_xy_propuesto[1]
+        contacto_con_laberinto = False
     elif INTERACCION == INTERACCION_DESLIZARSE:
         # Deslizarse. Si no puede ir para adelante pero puede ir al costado o viceversa que lo haga
         if (img_laberinto.get_at((pos_x_propuesta, pos_y_quieto))[0]) == 255:
             delta_xy_habilitado[0] = delta_xy_propuesto[0]
+            contacto_con_laberinto = True
         elif (img_laberinto.get_at((pos_x_quieto, pos_y_propuesta))[0]) == 255:
             delta_xy_habilitado[1] = delta_xy_propuesto[1]
+            contacto_con_laberinto = True
     elif INTERACCION == INTERACCION_REBOTAR:
         if (img_laberinto.get_at((pos_x_propuesta, pos_y_rebote))[0]) == 255:
             delta_xy_habilitado[0] = delta_xy_propuesto[0]
             delta_xy_habilitado[1] = -delta_xy_propuesto[1]
+            contacto_con_laberinto = True
         elif (img_laberinto.get_at((pos_x_rebote, pos_y_propuesta))[0]) == 255:
             delta_xy_habilitado[0] = -delta_xy_propuesto[0]
             delta_xy_habilitado[1] = delta_xy_propuesto[1]
+            contacto_con_laberinto=True
     elif INTERACCION == INTERACCION_IGNORAR:
         delta_xy_habilitado[0] = delta_xy_propuesto[0]
         delta_xy_habilitado[1] = delta_xy_propuesto[1]
+    elif INTERACCION == INTERACCION_CHOCAR:
+        delta_xy_habilitado[0] = 0
+        delta_xy_habilitado[1] = 0
 
-    return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1]
+    return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
+
+def switcher (variable, valor1,valor2):
+    if variable == valor1:
+        variable = valor2
+    else:
+        variable = valor1
+    return variable
+
+def velocidad(fuerza,masa,tiempo_de_aplicacion):
+    vx=(fuerza[0]/masa)*tiempo_de_aplicacion
+    vy=(fuerza[1]/masa)*tiempo_de_aplicacion
+    return vx,vy

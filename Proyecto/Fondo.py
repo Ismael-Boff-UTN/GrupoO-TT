@@ -1,16 +1,19 @@
 import pygame
-from Camara import Camara
 import random
 
 class Fondo:
 
     def __init__(self,img_ruta,camara, img_laberinto_ruta,img_fondo_estatico_ruta):
         self.camara = camara
+        self.camara.fondo=self
         self.x = 0
         self.y = 0
         self.img = pygame.image.load(img_ruta).convert_alpha()
         self.img_laberinto=pygame.image.load(img_laberinto_ruta).convert()
-        self.img_fondo_estatico=pygame.image.load(img_fondo_estatico_ruta).convert()
+        #Adapta la imagen estatica de fondo al tamaño de pantalla
+        w, h = self.img_laberinto.get_size()
+        self.img_fondo_estatico = pygame.transform.smoothscale(pygame.image.load(img_fondo_estatico_ruta).convert(), (
+        camara.screen_ancho, int((h / w) * camara.screen_ancho)))
 
     def dibujar_fondo(self):
         self.camara.dibujar(self.img_laberinto, 0, 0)

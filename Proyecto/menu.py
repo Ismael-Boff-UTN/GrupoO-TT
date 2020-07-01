@@ -28,10 +28,10 @@ Bienvenidos a   " AirMayhem "
 
 Menu Ingreso al juego
 
-Seleccione un jugador
+Seleccione un Jugador
 
 1 Jugador 1: 
-2 jugador 2:
+2 Jugador 2:
 3 Jugador 3:
 4 Jugador 4: 
 5 Salir
