@@ -33,8 +33,8 @@ class Enemigo:
     def dibujar(self):
         if self.muriendo==True:
             self.ani_num += 1
-            if self.ani_num==2:
-                self.sonido_al_morir.play()
+#            if self.ani_num==2:
+#                self.sonido_al_morir.play()
             if self.ani_num == self.ani_max:
                 self.muerto = True
                 self.muriendo = False

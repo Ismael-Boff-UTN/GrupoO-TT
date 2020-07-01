@@ -8,6 +8,7 @@ class Camara:
         self.y=0
         self.screen_ancho = screen_ancho
         self.screen_alto = screen_alto
+
         if fullscreen:
             self.screen = pygame.display.set_mode((self.screen_ancho, self.screen_alto), pygame.FULLSCREEN | pygame.HWSURFACE| pygame.DOUBLEBUF)
         else:
@@ -40,7 +41,7 @@ class Camara:
 
         if dark:
             self.screen.blit(self.dark, (x-self.x-726/2, y-self.y-726/2), special_flags=pygame.BLEND_RGB_MULT)
-            pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
+            pygame.draw.rect(self.screen, [0, 0, 0,127], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
             pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
             pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
             pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
