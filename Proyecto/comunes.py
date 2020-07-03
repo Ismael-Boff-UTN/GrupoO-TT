@@ -18,8 +18,8 @@ def deltaXY_to_avance_ang(deltaXY):
     return unidad_de_avance, ang
 
 
-def esColision(obj_1_xy, obj_2_xy):
-    if distancia(obj_1_xy, obj_2_xy) < 40:
+def esColision(obj_1_xy, obj_2_xy,delta):
+    if distancia(obj_1_xy, obj_2_xy) < delta:
         return True
     return False
 
@@ -38,27 +38,27 @@ def rot_center(image, angle):
     return rot_image
 
 
-def avanzar_segun_laberinto2(actual_xy, unidad_de_avance, ang, ancho_alto_del_objeto, INTERACCION):
-    return avanzar_segun_laberinto(actual_xy, avance_ang_to_deltaXY(unidad_de_avance, ang), ancho_alto_del_objeto, INTERACCION)
+def avanzar_segun_laberinto2(actual_xy, unidad_de_avance, ang, INTERACCION):
+    return avanzar_segun_laberinto(actual_xy, avance_ang_to_deltaXY(unidad_de_avance, ang), INTERACCION)
 
 
-def avanzar_segun_laberinto(actual_xy, delta_xy_propuesto, ancho_alto_del_objeto, INTERACCION):
+def avanzar_segun_laberinto(actual_xy, delta_xy_propuesto, INTERACCION):
     delta_xy_habilitado = [0.0, 0.0]
     contacto_con_laberinto=False
 
     # Se fija si el punto central de la nave al moverse va a entrar en una zona blanca
-    pos_x_propuesta = int(actual_xy[0] + delta_xy_propuesto[0] + ancho_alto_del_objeto[0] / 2)
-    pos_y_propuesta = int(actual_xy[1] + delta_xy_propuesto[1] + ancho_alto_del_objeto[1] / 2)
+    pos_x_propuesta = int(actual_xy[0] + delta_xy_propuesto[0] )
+    pos_y_propuesta = int(actual_xy[1] + delta_xy_propuesto[1] )
 
     if pos_x_propuesta < 0 or pos_y_propuesta < 0:
-        return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
+        return [delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto]
     if pos_x_propuesta > 2999 or pos_y_propuesta > 1999:
-        return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
-    pos_x_quieto = int(actual_xy[0] + ancho_alto_del_objeto[0] / 2)
-    pos_y_quieto = int(actual_xy[1] + ancho_alto_del_objeto[1] / 2)
+        return [delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto]
+    pos_x_quieto = int(actual_xy[0])
+    pos_y_quieto = int(actual_xy[1])
 
-    pos_x_rebote = int(actual_xy[0] - delta_xy_propuesto[0] + ancho_alto_del_objeto[0] / 2)
-    pos_y_rebote = int(actual_xy[1] - delta_xy_propuesto[1] + ancho_alto_del_objeto[1] / 2)
+    pos_x_rebote = int(actual_xy[0] - delta_xy_propuesto[0])
+    pos_y_rebote = int(actual_xy[1] - delta_xy_propuesto[1])
 
     if (img_laberinto.get_at((pos_x_propuesta, pos_y_propuesta))[0]) == 255:
         delta_xy_habilitado[0] = delta_xy_propuesto[0]
@@ -88,7 +88,7 @@ def avanzar_segun_laberinto(actual_xy, delta_xy_propuesto, ancho_alto_del_objeto
         delta_xy_habilitado[0] = 0
         delta_xy_habilitado[1] = 0
 
-    return delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto
+    return [delta_xy_habilitado[0],delta_xy_habilitado[1],deltaXY_to_avance_ang(delta_xy_habilitado)[0],deltaXY_to_avance_ang(delta_xy_habilitado)[1],contacto_con_laberinto]
 
 def switcher (variable, valor1,valor2):
     if variable == valor1:

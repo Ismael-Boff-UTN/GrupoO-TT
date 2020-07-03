@@ -36,19 +36,17 @@ class Camara:
         else:
             self.y=y
 
-    def dibujar(self,img,x,y, dark=False):
-        self.screen.blit(img, (x-self.x, y-self.y))
+    def dibujar(self,img,xy, dark=False):
+        self.screen.blit(img, (xy[0]-self.x, xy[1]-self.y))
 
+        x=xy[0]
+        y=xy[1]
         if dark:
             self.screen.blit(self.dark, (x-self.x-726/2, y-self.y-726/2), special_flags=pygame.BLEND_RGB_MULT)
-            if (y - self.y - 726 / 2)>0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
-            if (y - self.y + 726) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
-            if (x - self.x - 726 / 2) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
-            if (self.screen_ancho-(x - self.x + 726 / 2)) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
+            pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
+            pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
+            pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
+            pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
 
 
     def visible_en_camara(self,x,y,ancho,alto):

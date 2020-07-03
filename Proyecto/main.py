@@ -5,7 +5,7 @@ from Enemigo import Enemigo
 from Fondo import Fondo
 from Camara import Camara
 import comunes
-
+from Estado import Estado
 
 # Inicializa PyGame
 pygame.init()
@@ -91,6 +91,22 @@ def minimapa():
 clock = pygame.time.Clock()
 
 
+estado_del_juego=None
+
+# Estado del Juego
+def get_estado():
+    estado = Estado()
+    estado.Jugador = player.get_estado()
+    for i in range(len(enemy)):
+        estado.Enemigo.append(enemy[i].get_estado())
+    return estado
+
+def set_Estado(estado):
+    if estado==None:
+        return
+    player.set_estado(estado.Jugador)
+    for i in range(len(enemy)):
+        enemy[i].set_estado(estado.Enemigo[i])
 
 
 # Loop principal del juego
@@ -98,12 +114,10 @@ ejecutandose = True
 while ejecutandose:
 
     # Max FPS 120
-    clock.tick(62)
+    clock.tick(60)
     for event in pygame.event.get():  # recorre todos los eventos que suceden en la pantalla
         if event.type == pygame.QUIT:  # si el evento es el tratar de cerrar la pantalla, sale del loop
             ejecutandose = False
-
-
 
         # si se presiona una tecla, mover el Jugador
         if event.type == pygame.KEYDOWN:
@@ -118,13 +132,12 @@ while ejecutandose:
     # Dibujar Imagen de fondo
     fondo.dibujar_fondo()
 
-
     # Movemos enemigos
     for i in range(len(enemy)):
         # Colisiones
         # Balas/Enemigos
         for j in range(len(player.balas)):
-                colision = comunes.esColision((enemy[i].x+32, enemy[i].y+32), (player.balas[j].x+16, player.balas[j].y+16))
+                colision = comunes.esColision(enemy[i].getPosicion(),player.balas[j].getPosicion(),40)
                 if colision and player.balas[j].quieta==False:
                     player.balas[j].set_quieta()
                     puntaje_valor += 1
@@ -134,8 +147,7 @@ while ejecutandose:
     # Player/Items
     for i in range(len(items)):
         if items[i] != None:
-            colision = comunes.esColision((player.x + 32, player.y + 32),
-                                          (items[i].x + 32, items[i].y + 32))
+            colision = comunes.esColision(player.getPosicion(),items[i].getPosicion(),64)
             if colision:
                 items[i].comer(player)
                 items[i]=None
@@ -143,10 +155,16 @@ while ejecutandose:
             items[i].dibujar()
 
     # Dibujar el Jugador
-    player.dibujar(player.x, player.y)
+    player.dibujar()
 
     puntaje_mostrar(textX, textY, str(int(clock.get_fps())))
     minimapa()
+
+    estado_del_juego = get_estado()
+    set_Estado(estado_del_juego)
+
     # sin esta linea no actualiza el relleno de pantalla
     pygame.display.update()
+
+
 mouse.set_visible(True)

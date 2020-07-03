@@ -13,53 +13,86 @@ class Enemigo:
         lista.sort()
         for imagen in lista:
             self.img_ani.append(pygame.image.load(img_ruta + "/" + imagen).convert_alpha())
-        self.x = xy[0]-32
-        self.y = xy[1]-32
-        self.unidad_de_avance=0.5
-        self.x_cambio = 1.0
-        self.y_cambio = 1.0
+        self.ancho = self.img_ani[0].get_width()
+        self.alto = self.img_ani[0].get_height()
+        # Sonido
+        self.sonido_al_morir = pygame.mixer.Sound(sonido_al_morir)
+        self.sonido_al_morir.set_volume(0.15)
+
+
+        self.x = 0
+        self.y = 0
+        self.setPosicion(xy)
+        self.velocidad =[1.0,1.0]
+        self.ani_num = 0
         self.muriendo=False
         self.muerto=False
-        self.ani_num=0
         self.items=items
+        self.ani_num=0
 
-        # Sonido
-#        self.sonido_al_morir = pygame.mixer.Sound(sonido_al_morir)
-#        self.sonido_al_morir.set_volume(0.15)
+    def get_estado(self):
+        estado = []
+        estado.append(self.x)
+        estado.append(self.y)
+        estado.append(self.velocidad)
+        estado.append(self.muriendo)
+        estado.append(self.muerto)
+        estado.append(self.items)
+        estado.append(self.ani_num)
+        return estado
 
+    def set_estado(self,estado):
+        self.x=estado[0]
+        self.y=estado[1]
+        self.velocidad=estado[2]
+        self.muriendo=estado[3]
+        self.muerto=estado[4]
+        self.items=estado[5]
+        self.ani_num=estado[6]
 
 
     # Funcion que dibuja el enemigo
     def dibujar(self):
         if self.muriendo==True:
             self.ani_num += 1
-#            if self.ani_num==2:
-#                self.sonido_al_morir.play()
+            if self.ani_num==2:
+                self.sonido_al_morir.play()
             if self.ani_num == self.ani_max:
                 self.muerto = True
                 self.muriendo = False
                 self.items.append(Items("imagenes/item",(self.x+32,self.y+32),self.camara))
-                self.x = -100
-                self.y = -100
+                self.setPosicion([-100,-100])
                 self.ani_num = 0
 
 
         if not self.muerto:
             self.mover()
-            self.camara.dibujar(self.img_ani[self.ani_num], self.x, self.y)
+            self.camara.dibujar(self.img_ani[self.ani_num], [self.x, self.y])
 
     def mover(self):
         # restringimos los movimientos para que no se escape de la pantalla
 
-        avance_normal = [self.x_cambio,self.y_cambio]
+        self.velocidad = comunes.avanzar_segun_laberinto(self.getPosicion(), self.velocidad, comunes.INTERACCION_REBOTAR)
 
-        avance_normal = comunes.avanzar_segun_laberinto((self.x, self.y), avance_normal, (64, 64), comunes.INTERACCION_REBOTAR)
 
-        self.x_cambio=avance_normal[0]
-        self.y_cambio=avance_normal[1]
-
-        self.x += self.x_cambio
-        self.y += self.y_cambio
+        xy = [0, 0]
+        xy[0] = self.getPosicion()[0] + self.velocidad[0]
+        xy[1] = self.getPosicion()[1] + self.velocidad[1]
+        self.setPosicion(xy)
 
     def morir(self):
             self.muriendo = True
+
+    def getPosicion(self,centro=True):
+        if centro:
+            return [int(self.x+self.ancho/2),int(self.y+self.alto/2)]
+        else:
+            return [int(self.x), int(self.y)]
+
+    def setPosicion(self,xy,centro=True):
+        if centro:
+            self.x=xy[0]-self.ancho/2
+            self.y=xy[1]-self.alto/2
+        else:
+            self.x = xy[0]
+            self.y = xy[1]

@@ -12,74 +12,117 @@ class Jugador:
 
     # Constructor def __init__(self, atributos)
     def __init__(self, img_ruta, xy, camara, img_bala_ruta):
-        self.energia = 50
-        self.tipo_de_velocidad = 0
-        self.contador_de_avance =0
-        self.incremento_contador = 0
-        self.item = 0
-        self.tipo_de_disparo = 0
-
         self.camara = camara
         self.camara.centrar(xy)
         self.img_ori = pygame.image.load(img_ruta).convert_alpha()
         self.ancho = self.img_ori.get_width()
         self.alto = self.img_ori.get_height()
-        self.x = xy[0] - self.ancho/2
-        self.y = xy[1] - self.alto/2
         self.img = self.img_ori
-        self.mira_laser=False
-
-        self.velocidad =[0.0,0.0]
         self.fuerza_propulsor=100
+        # Mouse
+        self.raton = Raton(self.camara)
+
+
+        self.x = 0
+        self.y = 0
+        self.setPosicion(xy)
+        self.velocidad =[0.0,0.0]
         self.velocidad_maxima=Jugador.VELOCIDAD_ALTA
         self.ang = 0.0
         self.friccion=Jugador.FRICCION_ALTA
         self.interaccion = comunes.INTERACCION_DESLIZARSE
         self.fuerza_disparo = 50
-
+        self.mira_laser=False
+        self.energia = 50
+        self.tipo_de_velocidad = 0
+        self.contador_de_avance = 0
+        self.incremento_contador = 0
+        self.item = 0
+        self.tipo_de_disparo = 0
         self.avanzar = False
         self.retroceder = False
-
         # Bala
-        self.balas =  []
+        self.balas = []
         for i in range (5):
             self.balas.append(Bala(img_bala_ruta, self.camara))
-        # Mouse
-        self.raton = Raton(self.camara)
+
+    def get_estado(self):
+        estado=[]
+        estado.append(self.x)
+        estado.append(self.y)
+        estado.append(self.velocidad)
+        estado.append(self.velocidad_maxima)
+        estado.append(self.ang)
+        estado.append(self.friccion)
+        estado.append(self.interaccion)
+        estado.append(self.fuerza_disparo)
+        estado.append(self.mira_laser)
+        estado.append(self.energia)
+        estado.append(self.tipo_de_velocidad)
+        estado.append(self.contador_de_avance)
+        estado.append(self.incremento_contador)
+        estado.append(self.item)
+        estado.append(self.tipo_de_disparo)
+        estado.append(self.avanzar)
+        estado.append(self.retroceder)
+        estado.append(self.balas)
+        return estado
+
+
+    def set_estado(self, estado):
+        self.x = estado[0]
+        self.y = estado[1]
+        self.velocidad= estado[2]
+        self.velocidad_maxima= estado[3]
+        self.ang= estado[4]
+        self.friccion= estado[5]
+        self.interaccion= estado[6]
+        self.fuerza_disparo= estado[7]
+        self.mira_laser= estado[8]
+        self.energia= estado[9]
+        self.tipo_de_velocidad= estado[10]
+        self.contador_de_avance= estado[11]
+        self.incremento_contador= estado[12]
+        self.item= estado[13]
+        self.tipo_de_disparo= estado[14]
+        self.avanzar= estado[15]
+        self.retroceder= estado[16]
+        self.balas = estado[17]
+
+
 
     # Funcion que dibuja el player
-    def dibujar(self, x, y):
+    def dibujar(self):
         self.mover_jugador()
         self.rotar_jugador()
 
         if self.item == Items.OSCURIDAD:
-            self.camara.dibujar(self.img, x, y,True)
+            self.camara.dibujar(self.img, self.getPosicion(False),True)
         else:
-            self.camara.dibujar(self.img, x, y,False)
+            self.camara.dibujar(self.img, self.getPosicion(False),False)
 
         self.contador_de_avance += self.incremento_contador
 
         if self.item == Items.TIRO_RAPIDO:
             if (self.contador_de_avance > 5)and (self.balas[1].quieta==True):
-                self.balas[1].x = self.x
-                self.balas[1].y = self.y
+                self.balas[1].setPosicion(self.getPosicion())
                 self.balas[1].ang = self.ang
                 self.balas[1].quieta = False
                 self.balas[1].mover_bala()
             if (self.contador_de_avance > 15) and (self.balas[2].quieta==True):
-                self.balas[2].x = self.x
-                self.balas[2].y = self.y
+                self.balas[2].setPosicion(self.getPosicion())
                 self.balas[2].ang = self.ang
                 self.balas[2].quieta = False
                 self.balas[2].mover_bala()
             if (self.contador_de_avance > 20) and (self.balas[3].quieta == True):
-                self.balas[3].x = self.x
-                self.balas[3].y = self.y
+                self.balas[3].setPosicion(self.getPosicion())
                 self.balas[3].ang = self.ang
                 self.balas[3].quieta = False
                 self.balas[3].mover_bala()
                 self.contador_de_avance = 0
                 self.incremento_contador = 0
+
+
 
     def tecla_presionada(self, eventkey):
         if eventkey == pygame.K_w:
@@ -95,12 +138,10 @@ class Jugador:
     def disparar(self):
         self.incremento_contador=1
 
-
         if (self.item ==Items.TIRO_TRIPLE):
             for i in range (3):
                 if self.balas[i].quieta:
-                    self.balas[i].x = self.x
-                    self.balas[i].y = self.y
+                    self.balas[i].setPosicion(self.getPosicion())
                     self.balas[0].ang = self.ang-30
                     self.balas[1].ang = self.ang
                     self.balas[2].ang = self.ang+30
@@ -111,18 +152,16 @@ class Jugador:
         elif (self.item == Items.TIRO_RAPIDO):
             for i in range(5):
                 if self.balas[i].quieta:
-                    self.balas[i].x = self.x
-                    self.balas[i].y = self.y
+                    self.balas[i].setPosicion(self.getPosicion())
                     self.balas[i].ang = self.ang
-                    self.balas[0].quieta = False
+                    self.balas[i].quieta = False
                     self.balas[i].interaccion = comunes.INTERACCION_CHOCAR
-                    self.balas[0].mover_bala()
+                    self.balas[i].mover_bala()
                     self.balas[i].bazooca = False
         elif (self.item == Items.TIRO_REBOTE):
             for i in range(1):
                 if self.balas[i].quieta:
-                    self.balas[i].x = self.x
-                    self.balas[i].y = self.y
+                    self.balas[i].setPosicion(self.getPosicion())
                     self.balas[i].ang = self.ang
                     self.balas[i].quieta = False
                     self.balas[i].interaccion= comunes.INTERACCION_REBOTAR
@@ -131,8 +170,7 @@ class Jugador:
         elif (self.item == Items.BAZOOCA):
             for i in range(1):
                 if self.balas[i].quieta:
-                    self.balas[i].x = self.x
-                    self.balas[i].y = self.y
+                    self.balas[i].setPosicion(self.getPosicion())
                     self.balas[i].ang = self.ang
                     self.balas[i].quieta = False
                     self.balas[i].interaccion = comunes.INTERACCION_CHOCAR
@@ -140,8 +178,7 @@ class Jugador:
         else:
             for i in range(1):
                 if self.balas[i].quieta:
-                    self.balas[i].x = self.x
-                    self.balas[i].y = self.y
+                    self.balas[i].setPosicion(self.getPosicion())
                     self.balas[i].ang = self.ang
                     self.balas[i].quieta = False
                     self.balas[i].interaccion =comunes.INTERACCION_CHOCAR
@@ -173,10 +210,9 @@ class Jugador:
                 comunes.avance_ang_to_deltaXY(self.fuerza_propulsor, self.ang), 300, 5)
 
         self.velocidad[0], self.velocidad[1], d, ang, contacto_con_pared = comunes.avanzar_segun_laberinto(
-            (self.x, self.y),
+            self.getPosicion(),
             (avance_por_propulsores[0] + self.velocidad[0],
-             avance_por_propulsores[1] + self.velocidad[1]),
-            (64, 64),  self.interaccion)
+             avance_por_propulsores[1] + self.velocidad[1]),self.interaccion)
 
         if comunes.deltaXY_to_avance_ang(self.velocidad)[0] > self.velocidad_maxima:
             self.velocidad[0], self.velocidad[1] = comunes.avance_ang_to_deltaXY(self.velocidad_maxima,
@@ -190,10 +226,12 @@ class Jugador:
 
         if comunes.deltaXY_to_avance_ang(self.velocidad)[0] < 0 or comunes.deltaXY_to_avance_ang(self.velocidad)[
             0] < 0.5:
-            self.velocidad[0], self.velocidad[1] = 0, 0
+            self.velocidad[0], self.velocidad[1] = [0, 0]
 
-        self.x += self.velocidad[0]
-        self.y += self.velocidad[1]
+        xy=[0,0]
+        xy[0] = self.getPosicion()[0] + self.velocidad[0]
+        xy[1] = self.getPosicion()[1] + self.velocidad[1]
+        self.setPosicion(xy)
 
         # la camara sigue al jugador
         if (self.x - self.camara.x) <  self.camara.screen_ancho*3/8:
@@ -228,3 +266,16 @@ class Jugador:
         self.img = comunes.rot_center(self.img_ori, self.ang)
 
 
+    def getPosicion(self,centro=True):
+        if centro:
+            return [self.x+self.ancho/2,self.y+self.alto/2]
+        else:
+            return [self.x, self.y]
+
+    def setPosicion(self,xy,centro=True):
+        if centro:
+            self.x=xy[0]-self.ancho/2
+            self.y=xy[1]-self.alto/2
+        else:
+            self.x = xy[0]
+            self.y = xy[1]
