@@ -174,6 +174,7 @@ class Jugador:
                     self.balas[i].ang = self.ang
                     self.balas[i].quieta = False
                     self.balas[i].interaccion = comunes.INTERACCION_CHOCAR
+                    self.balas[i].mover_bala()
                     self.balas[i].bazooca = True
         else:
             for i in range(1):

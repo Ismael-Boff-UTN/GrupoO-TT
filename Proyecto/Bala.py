@@ -46,15 +46,20 @@ class Bala:
             self.x += self.velocidad[0]
             self.y += self.velocidad[1]
             self.img = comunes.rot_center(self.img_ori, self.ang)
-            self.camara.dibujar(self.img, [self.x, self.y])
+
 
             # si la bala se va de la pantalla, que se quede quieta
-            if not self.camara.visible_en_camara(self.x, self.y, 16, 16):
+            if self.camara.visible_en_camara(self.x, self.y, 16, 16)==False:
                 self.set_quieta()
 
-                # si la bala se va de la pantalla, que se quede quieta
+            # si la bala se queda quieta... que se quede quieta
             if self.velocidad == [0, 0]:
                 self.set_quieta()
+
+    def dibujar(self):
+        if self.quieta==False:
+            self.camara.dibujar(self.img, [self.x, self.y])
+
 
     def set_quieta(self, quieta=True):
         if quieta:

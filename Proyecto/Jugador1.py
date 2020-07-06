@@ -1,12 +1,23 @@
 import socket
+import subprocess
+
+out = subprocess.Popen(['ipconfig'],stdout=subprocess.PIPE)
+stdout,stderr = out.communicate()
+i=iter(stdout.splitlines())
+for linea in i:
+    if str(linea).find("Wi-Fi") !=-1:
+        for linea2 in i:
+            if str(linea2).find("IPv4") !=-1:
+                print(str(linea2).split(':')[1].strip()[:-1])
+                SERVER=str(linea2).split(':')[1].strip()[:-1]
 
 HEADER = 64
-PORT = 8000
-FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "!DESCONECTADO "
-SERVER = "192.168.0.107"       #"192.168.0.107"
-# SERVER = "127.0.1.1" este server se usa para el caso de correr el codigo en linux
+PORT = 5050
+FORMAT = 'utf-8'
+DISCONNECT_MESSAGE = "!DISCONNECT"
+
 ADDR = (SERVER, PORT)
+
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
@@ -19,10 +30,10 @@ def send(msg):
     client.send(message)
     print(client.recv(2048).decode(FORMAT))
 
-send("hola Jugador # 1 !")
+send("Hello World!")
 input()
-send("hola a todos !")
+send("Hello Everyone!")
 input()
-send("hola grupo !")
+send("Hello Tim!")
 
 send(DISCONNECT_MESSAGE)

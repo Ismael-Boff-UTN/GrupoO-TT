@@ -33,7 +33,7 @@ class Items:
         self.x = 0
         self.y = 0
         self.setPosicion(xy)
-        self.tipo = random.randint(1,8)
+        self.tipo = Items.OSCURIDAD #random.randint(1,8)
 
     def comer(self, jugador):
       jugador.item = self.tipo

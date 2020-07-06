@@ -1,6 +1,6 @@
 import pygame
 from pygame import mouse
-from Jugador import Jugador  # importa a Jugador como un objeto instanciable
+from Jugador import Jugador
 from Enemigo import Enemigo
 from Fondo import Fondo
 from Camara import Camara
@@ -11,15 +11,14 @@ from Estado import Estado
 pygame.init()
 mouse.set_visible(False)
 
-
-
 # Crear la pantalla y camara
 camara=Camara(1280,720,False)
 #camara=Camara(1920,1080,True)
 
 # Fondo
-fondo = Fondo("imagenes/fondo1.png",camara,"imagenes/Laberinto.png","imagenes/fondo_quieto.jpg")
+fondo = Fondo("imagenes/fondo1.png",camara,"imagenes/Laberinto.png","imagenes/fondo_quieto.jpg") #FreePik
 
+#Pasar imagen del labarinto a comunes
 comunes.img_laberinto=fondo.img_laberinto
 
 # Titulo e Icono
@@ -27,14 +26,12 @@ pygame.display.set_caption("AirMayhaem")
 icono = pygame.image.load('imagenes/icono.png') # https://www.flaticon.com/search?search-type=icons&word=arcade+space
 pygame.display.set_icon(icono)
 
-player = Jugador("imagenes/player.png", fondo.punto_aleatorio_posible_segun_laberinto(), camara, "imagenes/bullet.png")
-
-enemy_cantidad = 30
+#Creacion de Jugador,Enemigos
 enemy = []
 items = []
-
-for i in range(enemy_cantidad):
+for i in range(30):
     enemy.append(Enemigo("imagenes/alien",fondo.punto_aleatorio_posible_segun_laberinto(),camara,"sonido\splat.wav",items))
+player = Jugador("imagenes/player.png", fondo.punto_aleatorio_posible_segun_laberinto(), camara, "imagenes/bullet.png")
 
 # Variable Puntaje
 puntaje_valor = 0
@@ -108,13 +105,34 @@ def set_Estado(estado):
     for i in range(len(enemy)):
         enemy[i].set_estado(estado.Enemigo[i])
 
+def dibujar_objetos():
+    # Max FPS 60
+    clock.tick(60)
+    # Dibujar Imagen de fondo
+    fondo.dibujar_fondo()
+    # Dibujar Enemigos
+    for i in range(len(enemy)):
+        enemy[i].dibujar()
+    # Dibujar Items
+    for i in range(len(items)):
+        if items[i]!=None:
+            items[i].dibujar()
+    # Dibujar Balas
+    for i in range(len(player.balas)):
+        player.balas[i].dibujar()
+    # Dibujar el Jugador
+    player.dibujar()
+    # Dibujar el Minimapa
+    minimapa()
+    # Dibujar puntaje
+    puntaje_mostrar(textX, textY, str(int(clock.get_fps())))
+    # Actualizar pantalla
+    pygame.display.update()
 
 # Loop principal del juego
 ejecutandose = True
 while ejecutandose:
 
-    # Max FPS 120
-    clock.tick(60)
     for event in pygame.event.get():  # recorre todos los eventos que suceden en la pantalla
         if event.type == pygame.QUIT:  # si el evento es el tratar de cerrar la pantalla, sale del loop
             ejecutandose = False
@@ -129,22 +147,18 @@ while ejecutandose:
         if event.type == pygame.KEYUP:
             player.tecla_levantada(event.key)
 
-    # Dibujar Imagen de fondo
-    fondo.dibujar_fondo()
-
-    # Movemos enemigos
+    # Colisiones Enemigos/Balas
     for i in range(len(enemy)):
-        # Colisiones
-        # Balas/Enemigos
         for j in range(len(player.balas)):
                 colision = comunes.esColision(enemy[i].getPosicion(),player.balas[j].getPosicion(),40)
                 if colision and player.balas[j].quieta==False:
                     player.balas[j].set_quieta()
                     puntaje_valor += 1
                     enemy[i].muriendo=True
-        enemy[i].dibujar()
+        # Movemos enemigos
+        enemy[i].actualizar()
 
-    # Player/Items
+    # Colisiones Player/Items
     for i in range(len(items)):
         if items[i] != None:
             colision = comunes.esColision(player.getPosicion(),items[i].getPosicion(),64)
@@ -152,19 +166,14 @@ while ejecutandose:
                 items[i].comer(player)
                 items[i]=None
                 continue
-            items[i].dibujar()
 
-    # Dibujar el Jugador
-    player.dibujar()
 
-    puntaje_mostrar(textX, textY, str(int(clock.get_fps())))
-    minimapa()
+    dibujar_objetos()
+    #print(clock.get_fps())
 
     estado_del_juego = get_estado()
     set_Estado(estado_del_juego)
 
-    # sin esta linea no actualiza el relleno de pantalla
-    pygame.display.update()
 
 
 mouse.set_visible(True)

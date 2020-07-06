@@ -1,7 +1,8 @@
 import pygame
 import math
 
-img_laberinto = 0
+img_laberinto = None
+
 INTERACCION_REBOTAR = 0
 INTERACCION_DESLIZARSE = 1
 INTERACCION_IGNORAR = 2

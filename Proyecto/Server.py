@@ -1,44 +1,38 @@
-import socket 
+import socket, pickle
 import threading
+import subprocess
 
-HEADER = 64
-PORT = 8000
-SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DESCONECTAOD"
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
-server.listen(4)  # solo deja conectar a cuatro jugadores
+class Server:
+    OK = bytes(1)
 
-def handle_client(conn, addr):
-    print(f"[NUEVA CONEXION] {addr} comentado!.")
+    def __init__(self):
+        PORT = 5050
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.bind((SERVER_IP, PORT))
+        self.server.listen()
+        print(f"Server esta escuchando en {SERVER_IP}")
+        self.SERVER_IP = self.get_wifi_ip()
 
-    connected = True
-    while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
+    def cliente_atender(self,conn,addr):
+        data_variable = pickle.loads(conn.recv(4096))
+        print(data_variable)
+        return data_variable
 
-            print(f"[{addr}] {msg}")
-            conn.send("Mensaje recibido ".encode(FORMAT))
-
-    conn.close()
-        
-
-def start():
-    server.listen()
-    print(f"[INICIANDO ] Servidor se esta ejecutando en {SERVER}")
-    while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
+    def loop(self):
+        conn, addr = self.server.accept()
+        #meter en loop principal
+        thread = threading.Thread(target=self.cliente_atender,args=(conn,addr))
         thread.start()
-        print(f"[CONEXION ACTIVA] {threading.activeCount() - 1}")
+        #conn.send(pickle.dumps("ok"))
 
-
-print("[INICIANDO ] servidor esta ejecutando...")
-start()
+    def get_wifi_ip(self):
+        out = subprocess.Popen(['ipconfig'],stdout=subprocess.PIPE)
+        stdout,stderr = out.communicate()
+        i=iter(stdout.splitlines())
+        for linea in i:
+            if str(linea).find("Wi-Fi") !=-1:
+                for linea2 in i:
+                    if str(linea2).find("IPv4") !=-1:
+                        SERVER_IP=str(linea2).split(':')[1].strip()[:-1]
+                        return SERVER_IP

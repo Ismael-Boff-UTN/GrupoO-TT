@@ -50,9 +50,7 @@ class Enemigo:
         self.items=estado[5]
         self.ani_num=estado[6]
 
-
-    # Funcion que dibuja el enemigo
-    def dibujar(self):
+    def actualizar(self):
         if self.muriendo==True:
             self.ani_num += 1
             if self.ani_num==2:
@@ -60,11 +58,14 @@ class Enemigo:
             if self.ani_num == self.ani_max:
                 self.muerto = True
                 self.muriendo = False
-                self.items.append(Items("imagenes/item",(self.x+32,self.y+32),self.camara))
+                self.items.append(Items("imagenes/item",self.getPosicion(),self.camara))
                 self.setPosicion([-100,-100])
                 self.ani_num = 0
+        if self.muerto==False:
+            self.mover()
 
-
+    # Funcion que dibuja el enemigo
+    def dibujar(self):
         if not self.muerto:
             self.mover()
             self.camara.dibujar(self.img_ani[self.ani_num], [self.x, self.y])

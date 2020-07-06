@@ -1,4 +1,5 @@
 import pygame
+import pygame.gfxdraw
 
 class Camara:
 
@@ -15,6 +16,7 @@ class Camara:
             self.screen = pygame.display.set_mode((self.screen_ancho, self.screen_alto), pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         self.dark=pygame.image.load("imagenes/dark.bmp").convert()
+
 
     def centrar(self,xy):
         self.set_x(xy[0]-800/2)
@@ -40,16 +42,24 @@ class Camara:
         x=xy[0]
         y=xy[1]
         self.screen.blit(img, (x-self.x, y-self.y))
+
         if dark:
+            color = (0,0,0,255-self.dark.get_at([1,1])[0]) #(0, 0, 0, 190)
+
             self.screen.blit(self.dark, (x-self.x-726/2, y-self.y-726/2), special_flags=pygame.BLEND_RGB_MULT)
+
             if (y - self.y - 726 / 2)>0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
+                pygame.gfxdraw.box(self.screen, pygame.Rect(x - self.x - 726 / 2, 0, 726, y - self.y - 726 / 2), color)
+                #pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, self.screen_ancho, y - self.y - 726 / 2])
             if (y - self.y + 726) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
+                pygame.gfxdraw.box(self.screen, pygame.Rect(x - self.x - 726 / 2,  y - self.y + 726/2, 726, y - self.y + 726 ),color)
+                #pygame.draw.rect(self.screen, [0, 0, 0], [0,  y - self.y + 726/2, self.screen_ancho, y - self.y + 726 ])
             if (x - self.x - 726 / 2) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
+                pygame.gfxdraw.box(self.screen,pygame.Rect(0, 0, x - self.x - 726 / 2,self.screen_alto ),color)
+                #pygame.draw.rect(self.screen, [0, 0, 0], [0, 0, x - self.x - 726 / 2,self.screen_alto ])
             if (self.screen_ancho-(x - self.x + 726 / 2)) > 0:
-                pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
+                pygame.gfxdraw.box(self.screen, pygame.Rect(x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2)+1, self.screen_alto),color)
+                #pygame.draw.rect(self.screen, [0, 0, 0], [x - self.x + 726 / 2, 0, self.screen_ancho-(x - self.x + 726 / 2), self.screen_alto])
 
 
     def visible_en_camara(self,x,y,ancho,alto):
